@@ -1,0 +1,10 @@
+{
+  "description": "Enhance user engagement with a dynamic web experience that generates floating particles around the cursor, creating an interactive and visually appealing interface.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
