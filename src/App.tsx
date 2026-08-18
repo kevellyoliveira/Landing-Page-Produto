@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
-import helmetsImg from '@/imports/ChatGPT_Image_15_de_ago._de_2026__16_47_20__1_.png'
 import motorcycleSound from '@/imports/motorcycle-rev.wav'
+import capaceteVermelho from '@/imports/capaverme.png'
+import capaceteBranco from '@/imports/capabranca.png'
+import capaceteMarrom from '@/imports/capamarom.png'
+import capaceteAzul from '@/imports/capaazul.png'
 import azulVideo from '@/imports/public/videos/azul-video-meu.mp4'
 import vermelhoVideo from '@/imports/public/videos/vermelho-video-meu.mp4'
 import marromVideo from '@/imports/public/videos/marrom-video-meu.mp4'
 import brancoVideo from '@/imports/public/videos/branco-video-meu.mp4'
+import logo1 from '@/imports/logo1.png'
 
 /* ─────────────────────────────────────────────────────────────
    UTILS
@@ -104,132 +108,165 @@ function Navbar() {
   )
 }
 
-/* ─────────────────────────────────────────────────────────────
-   HERO
-───────────────────────────────────────────────────────────── */
+
 function Hero() {
-  const lineRef = useRef<HTMLDivElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    // prepare audio asset for user-initiated play (button)
     const audio = new Audio(motorcycleSound)
     audio.preload = 'auto'
     audio.volume = 0.72
     audioRef.current = audio
 
     return () => {
-      try { audio.pause(); audio.currentTime = 0 } catch {}
+      try {
+        audio.pause()
+        audio.currentTime = 0
+      } catch {}
+
       audioRef.current = null
     }
   }, [])
 
   return (
     <section
-      className="relative flex flex-col items-center justify-center"
-      style={{ minHeight: '100vh', background: 'var(--bg)', overflow: 'hidden' }}
+      className="hero relative flex flex-col items-center justify-center"
+      style={{
+        minHeight: '100vh',
+        background: 'var(--bg)',
+        overflow: 'hidden',
+      }}
     >
-      {/* Subtle grid */}
+
+      {/* GRID DE FUNDO */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
         }}
       />
 
-      {/* Light streak top-left */}
+      {/* BRILHO HORIZONTAL SUTIL */}
+      <div className="hero-horizontal-glow pointer-events-none" />
+
+      {/* =====================================================
+          LOGO + LINHAS DE LUZ
+      ====================================================== */}
+
+      <div className="syrax-lines">
+
+        {/* LINHA SUPERIOR */}
+        <div className="syrax-line syrax-line-top">
+          <span className="syrax-light-dot" />
+                    <span className="syrax-light-dot" />
+
+        </div>
+
+        {/* LOGO */}
+        <img
+          src={logo1}
+          alt="SYRAX — Elements in Motion"
+          className="hero-logo-image"
+        />
+
+        {/* LINHA INFERIOR */}
+        <div className="syrax-line syrax-line-bottom">
+          <span className="syrax-light-dot" />
+        </div>
+
+      </div>
+
+      {/* =====================================================
+          SLOGAN
+      ====================================================== */}
+
+      <div className="hero-slogan mt-10 tracking-[0.15em] text-white/40 font-light">
+        A PRÓXIMA CORRIDA.
+      </div>
+
+      {/* LINHA */}
       <div
-        className="absolute pointer-events-none"
+        className="hero-tagline mt-6"
         style={{
-          width: 600, height: 1, top: '38%', left: '50%', transform: 'translateX(-50%)',
-          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)',
+          width: 80,
+          height: 1,
+          background:
+            'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
         }}
       />
 
-      {/* Line of light */}
-      <div className="relative flex flex-col items-center gap-0 z-10">
-        <div
-          ref={lineRef}
-          className="hero-line"
-          style={{
-            height: 1,
-            width: 0,
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent)',
-            boxShadow: '0 0 6px 1px rgba(255,255,255,0.5)',
-            marginBottom: 40,
-            position: 'relative'
+      {/* =====================================================
+          CTA
+      ====================================================== */}
+
+      <div className="hero-cta mt-10">
+        <button
+          onClick={() => {
+            try {
+              if (audioRef.current) {
+                audioRef.current.currentTime = 0
+              }
+            } catch {}
+
+            audioRef.current?.play().catch(() => {})
+
+            document
+              .getElementById('modelos')
+              ?.scrollIntoView({ behavior: 'smooth' })
           }}
-        />
-
-        {/* (audio unlock button removed; autoplay unlock handled via pointer/keydown/touch listeners) */}
-
-        {/* Logo */}
-        <div className="hero-logo text-center">
-          <div className="syrax-wordmark" style={{ fontSize: 'clamp(52px, 12vw, 110px)' }}>
-            SYRAX
-          </div>
-          <div
-            className="mt-1 tracking-[0.5em] text-white/25 font-light"
-            style={{ fontSize: 'clamp(9px, 1.3vw, 13px)', fontFamily: 'Orbitron, sans-serif' }}
-          >
-            ELEMENTS IN MOTION.
-          </div>
-        </div>
-
-        {/* Slogan */}
-        <div
-          className="hero-slogan mt-10 tracking-[0.15em] text-white/40 font-light"
-          style={{ fontSize: 'clamp(11px, 1.5vw, 14px)', fontFamily: 'Orbitron, sans-serif' }}
+          className="group relative overflow-hidden px-10 py-4 text-xs tracking-[0.22em] text-white/80 hover:text-white transition-all duration-300 cursor-pointer"
+          style={{
+            fontFamily: 'Orbitron, sans-serif',
+            border: '1px solid rgba(255,255,255,0.2)',
+            background: 'rgba(255,255,255,0.03)',
+          }}
         >
-          THE NEXT RIDE.
-        </div>
 
-        {/* Horizontal line below slogan */}
-        <div
-          className="hero-tagline mt-6"
-          style={{ width: 80, height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)' }}
-        />
-
-        {/* CTA */}
-        <div className="hero-cta mt-10">
-          <button
-            onClick={() => {
-              try { audioRef.current && (audioRef.current.currentTime = 0) } catch {}
-              audioRef.current?.play().catch(() => {})
-              document.getElementById('modelos')?.scrollIntoView({ behavior: 'smooth' })
-            }}
-            className="group relative overflow-hidden px-10 py-4 text-xs tracking-[0.22em] text-white/80 hover:text-white transition-all duration-300 cursor-pointer"
+          {/* EFEITO HOVER */}
+          <span
+            className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"
             style={{
-              fontFamily: 'Orbitron, sans-serif',
-              border: '1px solid rgba(255,255,255,0.2)',
-              background: 'rgba(255,255,255,0.03)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)',
             }}
-          >
-            <span
-              className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
-            />
-            EXPLORAR CAPACETES
-          </button>
-        </div>
+          />
+
+          EXPLORAR CAPACETES
+
+        </button>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="hero-scroll absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
+      {/* =====================================================
+          SCROLL
+      ====================================================== */}
+
+      <div className="hero-scroll absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+
         <span
           className="tracking-[0.3em] text-white/25 font-light"
-          style={{ fontSize: 10, fontFamily: 'Orbitron, sans-serif' }}
+          style={{
+            fontSize: 10,
+            fontFamily: 'Orbitron, sans-serif',
+          }}
         >
-          SCROLL TO EXPLORE
+          DESCUBRA MAIS
         </span>
-        <div className="scroll-arrow text-white/25" style={{ fontSize: 14 }}>↓</div>
+
+        <div
+          className="scroll-arrow text-white/25"
+          style={{ fontSize: 14 }}
+        >
+          ↓
+        </div>
+
       </div>
+
     </section>
   )
 }
+
 
 /* ─────────────────────────────────────────────────────────────
    BRAND INTRO
@@ -331,7 +368,7 @@ function ElementsIntro() {
               color: 'transparent',
             }}
           >
-            FOUR ELEMENTS.<br />FOUR WAYS TO RIDE.
+            QUATRO ELEMENTOS.<br />QUATRO FORMAS DE PILOTAR.
           </h2>
           <p className="mt-6 text-white/35 font-light tracking-wider max-w-md mx-auto" style={{ fontSize: 14 }}>
             Quatro conceitos. Quatro personalidades. Uma mesma filosofia de proteção.
@@ -460,7 +497,7 @@ const targetTime = useRef<number>(0)
     <section
       id={index === 1 ? 'modelos' : undefined}
       className="relative flex items-center overflow-hidden"
-      style={{ minHeight: '100vh', background: 'var(--bg)', scrollMarginTop: 64 }}
+      style={{ minHeight: '80vh', background: 'var(--bg)', scrollMarginTop: 64 }}
     >
       {/* Accent glow */}
       <div
@@ -565,138 +602,155 @@ const targetTime = useRef<number>(0)
             }}
           /> */}
 
-           {/* Interactive helmet video */}
-{/* Helmet crop
-<div
-  className="reveal-right helmet-float"
-  style={{
-    width: 'min(480px, 90vw)',
-    height: 'min(420px, 78vw)',
-    backgroundImage: `url(${helmetsImg})`,
-    backgroundSize: '400% auto',
-    backgroundPosition: `${bgX} 10%`,
-    backgroundRepeat: 'no-repeat',
-    filter: `drop-shadow(0 0 40px ${accentColor}35)`,
-  }}
-/> */}
-
 {/* Interactive helmet video */}
 <div
   className="reveal-right helmet-float relative select-none"
   style={{
-    width: 'min(480px, 90vw)',
-    height: 'min(420px, 78vw)',
-    filter: `drop-shadow(0 0 40px ${accentColor}35)`,
+    width: 'min(420px, 85vw)',
+    height: 'min(420px, 85vw)',
     cursor: isDragging ? 'grabbing' : 'grab',
     touchAction: 'none',
   }}
   onPointerDown={(e) => {
-  e.currentTarget.setPointerCapture(e.pointerId)
-
-  const video = videoRef.current
-  if (!video) return
-
-  setIsDragging(true)
-
-  dragStartX.current = e.clientX
-  startTime.current = video.currentTime
-  targetTime.current = video.currentTime
-}}
-
-onPointerMove={(e) => {
-  if (!isDragging || !videoRef.current) return
-
-  const video = videoRef.current
-  const deltaX = e.clientX - dragStartX.current
-
-  const {
-    pixelsPerRotation: cfgPixels = 600,
-    reverseDrag = false,
-    sensitivity = 1,
-    lerpFactor = 0.2,
-    seekThreshold = 0.02,
-  } = videoConfig ?? {}
-
-  // apply sensitivity and compute rotation progress
-  const effectivePixels = cfgPixels / Math.max(0.0001, sensitivity)
-  const rotationProgress = deltaX / effectivePixels
-
-  let newTime = startTime.current - rotationProgress * (video.duration || 0)
-  if (reverseDrag) {
-    newTime = startTime.current + rotationProgress * (video.duration || 0)
-  }
-
-  // wrap-around for infinite rotation
-  if (video.duration > 0) {
-    newTime = ((newTime % video.duration) + video.duration) % video.duration
-  }
-
-  targetTime.current = newTime
-
-  // start a smoothing rAF loop that lerps displayedTime -> targetTime
-  const step = () => {
-    const vid = videoRef.current
-    if (!vid) {
-      animationFrame.current = null
-      return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    const video = videoRef.current
+    if (!video) return
+    setIsDragging(true)
+    dragStartX.current = e.clientX
+    startTime.current = video.currentTime
+    targetTime.current = video.currentTime
+  }}
+  onPointerMove={(e) => {
+    if (!isDragging || !videoRef.current) return
+    const video = videoRef.current
+    const deltaX = e.clientX - dragStartX.current
+    const {
+      pixelsPerRotation: cfgPixels = 600,
+      reverseDrag = false,
+      sensitivity = 1,
+      lerpFactor = 0.2,
+      seekThreshold = 0.02,
+    } = videoConfig ?? {}
+    const effectivePixels = cfgPixels / Math.max(0.0001, sensitivity)
+    const rotationProgress = deltaX / effectivePixels
+    let newTime = startTime.current - rotationProgress * (video.duration || 0)
+    if (reverseDrag) newTime = startTime.current + rotationProgress * (video.duration || 0)
+    if (video.duration > 0) newTime = ((newTime % video.duration) + video.duration) % video.duration
+    targetTime.current = newTime
+    const step = () => {
+      const vid = videoRef.current
+      if (!vid) { animationFrame.current = null; return }
+      displayedTime.current = displayedTime.current + (targetTime.current - displayedTime.current) * lerpFactor
+      if (Math.abs(displayedTime.current - vid.currentTime) > seekThreshold) {
+        try { vid.currentTime = displayedTime.current } catch {}
+      }
+      if (Math.abs(displayedTime.current - targetTime.current) > 0.001) {
+        animationFrame.current = requestAnimationFrame(step)
+      } else {
+        animationFrame.current = null
+      }
     }
-
-    // lerp towards target
-    displayedTime.current = displayedTime.current + (targetTime.current - displayedTime.current) * lerpFactor
-
-    // only seek when difference is meaningful to avoid tiny seeks
-    if (Math.abs(displayedTime.current - vid.currentTime) > seekThreshold) {
-      try { vid.currentTime = displayedTime.current } catch {}
-    }
-
-    // continue loop while not yet close to target
-    if (Math.abs(displayedTime.current - targetTime.current) > 0.001) {
-      animationFrame.current = requestAnimationFrame(step)
-    } else {
-      animationFrame.current = null
-    }
-  }
-
-  if (animationFrame.current === null) {
-    animationFrame.current = requestAnimationFrame(step)
-  }
-}}
-
-onPointerUp={(e) => {
-  try { e.currentTarget.releasePointerCapture(e.pointerId) } catch {}
-  setIsDragging(false)
-}}
-
-onPointerCancel={() => {
-  setIsDragging(false)
-}}
+    if (animationFrame.current === null) animationFrame.current = requestAnimationFrame(step)
+  }}
+  onPointerUp={(e) => {
+    try { e.currentTarget.releasePointerCapture(e.pointerId) } catch {}
+    setIsDragging(false)
+  }}
+  onPointerCancel={() => setIsDragging(false)}
 >
-  <video
-    ref={videoRef}
-    src={videoSrc ?? vermelhoVideo}
-    preload="auto"
-    muted
-    playsInline
-    className="w-full h-full object-contain pointer-events-none"
+  {/* Glow suave por trás do círculo */}
+  <div
+    className="absolute pointer-events-none"
+    style={{
+      inset: '-6%',
+      borderRadius: '50%',
+      background: `radial-gradient(circle, ${accentColor}22 0%, transparent 72%)`,
+      zIndex: 0,
+    }}
   />
 
-  {/* Instruction */}
+  {/* Vídeo cortado em círculo perfeito — sem fade, sem ambiguidade */}
   <div
-    className="absolute bottom-3 left-1/2 -translate-x-1/2 
-               text-white/30 tracking-[0.3em] text-[9px]
-               pointer-events-none whitespace-nowrap"
-    style={{ fontFamily: 'Orbitron, sans-serif' }}
+    className="absolute overflow-hidden"
+    style={{
+      inset: '6%',
+      borderRadius: '50%',
+      zIndex: 1,
+      boxShadow: `inset 0 0 0 1px ${accentColor}35, 0 0 30px -6px ${accentColor}40`,
+    }}
   >
-    ARRASTE PARA EXPLORAR
+    <video
+      ref={videoRef}
+      src={videoSrc ?? vermelhoVideo}
+      preload="auto"
+      muted
+      playsInline
+      className="w-full h-full object-cover pointer-events-none"
+    />
+    {/* leve vinheta interna pra fundir cinza do vídeo com o fundo do card */}
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{ boxShadow: 'inset 0 0 40px 20px rgba(0,0,0,0.45)' }}
+    />
   </div>
-</div>
 
-          {/* Accent line */}
-          <div
-            className="absolute bottom-6 left-1/2 -translate-x-1/2"
-            style={{ width: 60, height: 1, background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)` }}
-          />
-        </div>
+  {/* Anel de scan giratório (tracejado) */}
+  <div
+    className="absolute pointer-events-none tech-ring"
+    style={{ inset: '2%', borderRadius: '50%', zIndex: 2 }}
+  >
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <circle
+        cx="50" cy="50" r="48"
+        fill="none"
+        stroke={accentColor}
+        strokeOpacity="0.4"
+        strokeWidth="0.6"
+        strokeDasharray="1.5 4"
+      />
+    </svg>
+  </div>
+
+  {/* Marcas tipo HUD nos 4 pontos cardeais */}
+  {[0, 90, 180, 270].map(angle => (
+    <div
+      key={angle}
+      className="absolute pointer-events-none"
+      style={{
+        top: '50%', left: '50%',
+        width: 14, height: 2,
+        background: `${accentColor}80`,
+        transform: `rotate(${angle}deg) translate(0, -${'min(420px, 85vw)'.includes('%') ? '210px' : '52%'}) `,
+        transformOrigin: 'center',
+        zIndex: 3,
+      }}
+    />
+  ))}
+
+  {/* Instruction */}
+<div
+  className="absolute bottom-10 left-1/2 -translate-x-1/2 translate-y-[50px]
+             text-white/30 tracking-[0.3em] text-[9px]
+             pointer-events-none whitespace-nowrap"
+  style={{
+    fontFamily: 'Orbitron, sans-serif',
+    zIndex: 4,
+  }}
+>
+  ARRASTE PARA EXPLORAR
+</div>
+</div>  
+
+         {/* Accent line */}
+<div
+  className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[20px] helmet-float"
+  style={{
+    width: 60,
+    height: 1,
+    background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)`,
+  }}
+/>    
+</div>
       </div>
     </section>
   )
@@ -746,22 +800,41 @@ function TechnologySection() {
               color: 'transparent',
             }}
           >
-            ENGINEERED FOR THE RIDE.
+            PROJETADO PARA O MOVIMENTO.
           </h2>
         </div>
 
-        {/* Helmet + hotspots */}
-        <div className="relative mx-auto" style={{ maxWidth: 580, height: 460 }}>
-          {/* Helmet image (using EMBER column) */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${helmetsImg})`,
-              backgroundSize: '400% auto',
-              backgroundPosition: '0% 10%',
-              backgroundRepeat: 'no-repeat',
-            }}
-          />
+     {/* Helmet + hotspots */}
+<div className="relative mx-auto" style={{ maxWidth: 580, height: 460 }}>
+  {/* Futuristic Helmet Container with Animations */}
+  <div className="helmet-container">
+    <div className="helmet-glow" />
+
+    <div className="helmet-pulse-ring" style={{ animationDelay: '0s' }} />
+    <div className="helmet-pulse-ring" style={{ animationDelay: '1.3s' }} />
+    <div className="helmet-pulse-ring" style={{ animationDelay: '2.6s' }} />
+
+    <div className="helmet-image-wrap">
+      <div
+        className="helmet-image"
+        style={{
+          backgroundImage: `url(${capaceteVermelho})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+    </div>
+
+    <div className="helmet-scanline" />
+
+    <div className="hud-corner hud-corner-tl" />
+    <div className="hud-corner hud-corner-tr" />
+    <div className="hud-corner hud-corner-bl" />
+    <div className="hud-corner hud-corner-br" />
+  </div>
+
+  {/* Hotspots */}
 
           {/* Hotspots */}
           {TECHS.map(tech => (
@@ -808,7 +881,7 @@ function TechnologySection() {
                     >
                       {tech.label}
                     </div>
-                    <div className="text-white/45 font-light mt-1" style={{ fontSize: 11, maxWidth: 180, lineHeight: 1.5 }}>
+                    <div className="text-white/45 font-light mt-1" style={{ fontSize: 11, maxWidth: 300, lineHeight: 1.5 }}>
                       {tech.desc}
                     </div>
                   </div>
@@ -914,10 +987,11 @@ function ElementSelector() {
               <div
                 style={{
                   height: 220,
-                  backgroundImage: `url(${helmetsImg})`,
+                  backgroundImage: `url(${capaceteVermelho})`,
                   backgroundSize: '400% auto',
                   backgroundPosition: `${m.bgX} 8%`,
                   backgroundRepeat: 'no-repeat',
+                  filter: 'contrast(1.08) brightness(1.02)',
                 }}
               />
 
@@ -994,14 +1068,14 @@ function SafetySection() {
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
         style={{
           fontFamily: 'Orbitron, sans-serif',
-          fontSize: 'clamp(80px, 18vw, 240px)',
+          fontSize: 'clamp(70px, 16vw, 210px)',
           fontWeight: 900,
-          color: 'rgba(255,255,255,0.015)',
+          color: 'rgba(255,255,255,0.030)',
           letterSpacing: '0.05em',
           whiteSpace: 'nowrap',
         }}
       >
-        SAFE
+        PROTEÇÃO
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
@@ -1024,7 +1098,7 @@ function SafetySection() {
               maxWidth: 640,
             }}
           >
-            PROTECTION<br />WITHOUT COMPROMISE.
+            PROTEÇÃO<br />SEM LIMITES.
           </h2>
           <p
             className="mt-6 text-white/40 font-light leading-relaxed max-w-xl"
@@ -1115,11 +1189,11 @@ function FinalCTA() {
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             color: 'transparent',
-            maxWidth: 560,
+            maxWidth: 600,
             lineHeight: 1.2,
           }}
         >
-          THE NEXT RIDE<br />STARTS HERE.
+          A PRÓXIMA ESTRADA<br /> COMEÇA AQUI.
         </h2>
 
         <p
@@ -1215,9 +1289,9 @@ function BenefitsSection() {
       {/* big ghost label */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
-        style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(80px,16vw,220px)', fontWeight: 900, color: 'rgba(255,255,255,0.013)', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}
+        style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(80px,16vw,220px)', fontWeight: 900, color: 'rgba(255,255,255,0.030)', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}
       >
-        BEYOND
+        VÁ ALÉM
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
@@ -1229,7 +1303,7 @@ function BenefitsSection() {
             className="font-black leading-none"
             style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(28px, 5vw, 64px)', background: 'linear-gradient(135deg, #fff 0%, #777 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}
           >
-            MORE THAN<br />A HELMET.
+            MAIS DO QUE<br />UM CAPACETE.
           </h2>
         </div>
 
@@ -1273,8 +1347,8 @@ function HowItWorks() {
       <div className="max-w-5xl mx-auto">
         <div className="reveal mb-20">
           <div className="tracking-[0.3em] text-white/25 mb-5 font-light" style={{ fontSize: 10, fontFamily: 'Orbitron, sans-serif' }}>07 — COMO FUNCIONA</div>
-          <h2 className="font-black" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(28px, 5vw, 60px)', background: 'linear-gradient(135deg, #fff 0%, #777 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-            READY. ADAPT. RIDE.
+          <h2 className="font-black" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(50px, 5vw, 50px)', background: 'linear-gradient(135deg, #fff 0%, #777 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+            PREPARE-SE. ADAPTE-SE. PILOTE.
           </h2>
         </div>
 
@@ -1330,7 +1404,7 @@ function SocialProof() {
         <div className="reveal text-center mb-20">
           <div className="tracking-[0.3em] text-white/25 mb-5 font-light" style={{ fontSize: 10, fontFamily: 'Orbitron, sans-serif' }}>08 — AVALIAÇÕES</div>
           <h2 className="font-black" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(24px, 4.5vw, 54px)', background: 'linear-gradient(135deg, #fff 0%, #777 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-            HEARD ON THE ROAD.
+            ECOA PELA ESTRADA.
           </h2>
         </div>
 
@@ -1368,10 +1442,10 @@ function SocialProof() {
    PRICING
 ───────────────────────────────────────────────────────────── */
 const PRICING = [
-  { code: 'EMBER', element: 'FIRE',  price: 'R$ 4.990', color: 'var(--ember)', bgX: '0%' },
-  { code: 'TIDE',  element: 'WATER', price: 'R$ 5.190', color: 'var(--tide)',  bgX: '33.33%' },
-  { code: 'STONE', element: 'EARTH', price: 'R$ 5.490', color: 'var(--stone)', bgX: '66.67%' },
-  { code: 'ZEPHYR',element: 'AIR',   price: 'R$ 5.290', color: 'var(--zephyr)',bgX: '100%' },
+  { code: 'EMBER', element: 'FIRE',  price: 'R$ 4.990', color: 'var(--ember)', image: capaceteVermelho},
+  { code: 'TIDE',  element: 'WATER', price: 'R$ 5.190', color: 'var(--tide)', image: capaceteAzul},
+  { code: 'STONE', element: 'EARTH', price: 'R$ 5.490', color: 'var(--stone)', image: capaceteMarrom},
+  { code: 'ZEPHYR',element: 'AIR',   price: 'R$ 5.290', color: 'var(--zephyr)', image: capaceteBranco},
 ]
 
 function PricingSection() {
@@ -1384,7 +1458,7 @@ function PricingSection() {
         <div className="reveal mb-6">
           <div className="tracking-[0.3em] text-white/25 mb-5 font-light" style={{ fontSize: 10, fontFamily: 'Orbitron, sans-serif' }}>09 — OFERTA</div>
           <h2 className="font-black" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(28px, 5vw, 60px)', background: 'linear-gradient(135deg, #fff 0%, #777 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-            CHOOSE YOUR ELEMENT.
+            ESCOLHA SEU ELEMENTO.
           </h2>
         </div>
 
@@ -1418,17 +1492,30 @@ function PricingSection() {
               >
                 {/* Helmet preview */}
                 <div
-                  style={{
-                    height: 200,
-                    backgroundImage: `url(${helmetsImg})`,
-                    backgroundSize: '400% auto',
-                    backgroundPosition: `${m.bgX} 8%`,
-                    backgroundRepeat: 'no-repeat',
-                    filter: active ? `drop-shadow(0 0 24px ${m.color}50)` : 'none',
-                    transition: 'filter 0.4s ease',
-                  }}
-                />
-
+  style={{
+    height: 200,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    background: 'rgba(255,255,255,0.01)',
+  }}
+>
+  <img
+    src={m.image}
+    alt={`${m.code} — ${m.element}`}
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      filter: active
+        ? `drop-shadow(0 0 24px ${m.color}50)`
+        : 'contrast(1.08) brightness(1.02)',
+      transition: 'filter 0.4s ease, transform 0.4s ease',
+      transform: active ? 'scale(1.04)' : 'scale(1)',
+    }}
+  />
+</div>
                 <div className="p-5 flex flex-col gap-4 flex-1">
                   <div>
                     <div className="font-bold tracking-widest" style={{ fontFamily: 'Orbitron, sans-serif', color: m.color, fontSize: 18 }}>{m.code}</div>
@@ -1489,7 +1576,7 @@ function FAQ() {
         <div className="reveal mb-16">
           <div className="tracking-[0.3em] text-white/25 mb-5 font-light" style={{ fontSize: 10, fontFamily: 'Orbitron, sans-serif' }}>11 — FAQ</div>
           <h2 className="font-black" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: 'clamp(20px, 3.5vw, 44px)', background: 'linear-gradient(135deg, #fff 0%, #777 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
-            FREQUENTLY ASKED<br />QUESTIONS
+            PERGUNTAS<br />FREQUENTES
           </h2>
         </div>
 
